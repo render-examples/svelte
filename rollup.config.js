@@ -39,6 +39,15 @@ export default {
     name: "app",
     file: "public/build/bundle.js",
   },
+  onwarn: (warning, warn) => {
+    if (
+      warning.code === "CIRCULAR_DEPENDENCY" &&
+      warning.ids.some((id) => /node_modules\/svelte/.test(id))
+    ) {
+      return;
+    }
+    warn(warning);
+  },
   plugins: [
     svelte({
       compilerOptions: {
